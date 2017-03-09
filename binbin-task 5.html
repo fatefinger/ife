@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IFE javaScript task 05</title>
+    <style>
+        html {
+            font-family: 微软雅黑;
+            font-size: 14px;
+        }
+
+        .btn {
+            border: 1px solid #eeeeee;
+            border-radius: 2px;
+            line-height: 15px;
+            width: 50px;
+            padding: 2px 5px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .queue {
+            max-width: 100%;
+            height: 300px;
+            white-space: normal;
+            padding-bottom: 0;
+            position: relative;
+        }
+
+        .num-box {
+            background-color: red;
+            /*color: white;*/
+            width: 20px;
+            /*height: 100px;*/
+            float: left;
+            line-height: 50px;
+            text-align: center;
+            /*font-weight: bold;*/
+            margin-right: 2px;
+            margin-bottom: 0;
+            /*padding: 0 5px;*/
+            bottom: 0;
+            /*display: inline-block;*/
+            position: relative;
+            top:100px;
+        }
+
+        .ele-remove {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <input type="text">
+    <div class="btn" id="#left-add">左侧入</div>
+    <div class="btn" id="#right-add">右侧入</div>
+    <div class="btn" id="#left-remove">左侧出</div>
+    <div class="btn" id="#right-remove">右侧出</div>
+</div>
+<div class="queue">
+<!--<div style="height: 100px" class="num-box"></div>-->
+</div>
+<script>
+
+    (function () {
+        var count=0;
+        var queue = document.getElementsByClassName('queue')[0];
+//        事件句柄
+        var leftAdd = function () {
+            if (count>60){
+                return alert('最大只能添加60个')
+            }
+            var value = document.getElementsByTagName('input')[0].value;
+            if (!((value<=100)&&(value>=10))) {
+                return alert('请输入10-100之间的数字')
+            }
+            var newLastChild = document.createElement('div');
+            newLastChild.classList.add('num-box');
+            newLastChild.style.paddingBottom=value+'px';
+//            newLastChild.style.left=count*24+'px';
+//            newLastChild.innerHTML = value;
+            queue.insertBefore(newLastChild, queue.childNodes[0]);
+            count++;
+
+        };
+        var rightAdd = function () {
+            if (count>60){
+                return alert('最大只能添加60个')
+            }
+            var value = document.getElementsByTagName('input')[0].value;
+            if (!((value<=100)&&(value>=10))) {
+                return alert('请输入10-100之间的数字')
+            }
+            var newLastChild = document.createElement('div');
+            newLastChild.classList.add('num-box');
+            newLastChild.style.height=value+'px';
+//            newLastChild.style.left=count*24+'px';
+//            newLastChild.innerHTML = value;
+            queue.appendChild(newLastChild);
+            count++;
+        };
+        var leftRemove = function () {
+            var obj = queue.firstElementChild;
+            obj.classList.add('ele-remove');
+            var value = obj.style.height;
+            alert(value.substr(0,value.length-2));
+            setTimeout(function () {
+                var eleRemove = document.querySelectorAll('.ele-remove');
+                for (var i = 0; i < eleRemove.length; i++) {
+                    eleRemove[i].parentNode.removeChild(eleRemove[i])
+                }
+            }, 0);
+            count--;
+        };
+        var rightRemove = function () {
+            var obj = queue.lastElementChild;
+            obj.classList.add('ele-remove');
+            var value = obj.style.height;
+            alert(value.substr(0,value.length-2));
+            setTimeout(function () {
+                var eleRemove = document.querySelectorAll('.ele-remove');
+                for (var i = 0; i < eleRemove.length; i++) {
+                    eleRemove[i].parentNode.removeChild(eleRemove[i])
+                }
+            }, 0);
+            count--;
+        };
+        var clickRemove = function () {
+            this.classList.add('ele-remove');
+            setTimeout(function () {
+                var eleRemove = document.querySelectorAll('.ele-remove');
+                for (var i = 0; i < eleRemove.length; i++) {
+                    eleRemove[i].parentNode.removeChild(eleRemove[i])
+                }
+            }, 0);
+            count--;
+        };
+//事件绑定对象
+        var leftAddBtn = document.getElementById('#left-add');
+        var rightAddBtn = document.getElementById('#right-add');
+        var leftRemoveBtn = document.getElementById('#left-remove');
+        var rightRemoveBtn = document.getElementById('#right-remove');
+//        Array
+        var clickBtn = document.getElementsByClassName('num-box');
+
+//        事件绑定
+        leftAddBtn.addEventListener('click', leftAdd, false);
+        rightAddBtn.addEventListener('click', rightAdd, false);
+        leftRemoveBtn.addEventListener('click', leftRemove, false);
+        rightRemoveBtn.addEventListener('click', rightRemove, false);
+        for (var i = 0; i < clickBtn.length; i++) {
+            clickBtn[i].addEventListener('click', clickRemove, false);
+        }
+//冒泡排序
+        var popeSort=function (array) {
+
+        }
+
+    })()
+</script>
+</body>
+</html>
