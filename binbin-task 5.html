@@ -21,28 +21,26 @@
 
         .queue {
             max-width: 100%;
-            height: 300px;
+            height: 1500px;
             white-space: normal;
             padding-bottom: 0;
-            position: relative;
+            padding-top: 0;
+            /*position: relative;*/
         }
 
         .num-box {
             background-color: red;
-            /*color: white;*/
             width: 20px;
-            /*height: 100px;*/
             float: left;
-            line-height: 50px;
+            /*line-height: 50px;*/
             text-align: center;
-            /*font-weight: bold;*/
             margin-right: 2px;
-            margin-bottom: 0;
-            /*padding: 0 5px;*/
+            /*margin-bottom: 0;*/
             bottom: 0;
-            /*display: inline-block;*/
-            position: relative;
-            top:100px;
+            display: inline-block;
+            display: inline;
+            /*position: absolute;*/
+            top: 100px;
         }
 
         .ele-remove {
@@ -57,93 +55,112 @@
     <div class="btn" id="#right-add">右侧入</div>
     <div class="btn" id="#left-remove">左侧出</div>
     <div class="btn" id="#right-remove">右侧出</div>
+    <div class="btn" id="#sort">排序</div>
 </div>
 <div class="queue">
-<!--<div style="height: 100px" class="num-box"></div>-->
+    <!--<div style="height: 100px" class="num-box"></div>-->
 </div>
 <script>
 
     (function () {
-        var count=0;
+        var count = 0;
         var queue = document.getElementsByClassName('queue')[0];
+        var clickBtn = document.getElementsByClassName('num-box');
+        var queueValue = [];
+
 //        事件句柄
         var leftAdd = function () {
-            if (count>60){
+            if (count > 60) {
                 return alert('最大只能添加60个')
             }
             var value = document.getElementsByTagName('input')[0].value;
-            if (!((value<=100)&&(value>=10))) {
+            if (!((value <= 100) && (value >= 10))) {
                 return alert('请输入10-100之间的数字')
             }
-            var newLastChild = document.createElement('div');
-            newLastChild.classList.add('num-box');
-            newLastChild.style.paddingBottom=value+'px';
-//            newLastChild.style.left=count*24+'px';
-//            newLastChild.innerHTML = value;
-            queue.insertBefore(newLastChild, queue.childNodes[0]);
+            var newFirstChild = createChild('div', 'num-box', value);
+            queue.insertBefore(newFirstChild, queue.firstChild);
+            newFirstChild.addEventListener('click', clickRemove, false);
             count++;
-
+            queueValue.unshift(value);
         };
         var rightAdd = function () {
-            if (count>60){
+            if (count > 60) {
                 return alert('最大只能添加60个')
             }
             var value = document.getElementsByTagName('input')[0].value;
-            if (!((value<=100)&&(value>=10))) {
+            if (!((value <= 100) && (value >= 10))) {
                 return alert('请输入10-100之间的数字')
             }
-            var newLastChild = document.createElement('div');
-            newLastChild.classList.add('num-box');
-            newLastChild.style.height=value+'px';
-//            newLastChild.style.left=count*24+'px';
-//            newLastChild.innerHTML = value;
+            var newLastChild = createChild('div', 'num-box', value);
             queue.appendChild(newLastChild);
+            newLastChild.addEventListener('click', clickRemove, false);
             count++;
+            queueValue.push(value)
         };
         var leftRemove = function () {
             var obj = queue.firstElementChild;
             obj.classList.add('ele-remove');
             var value = obj.style.height;
-            alert(value.substr(0,value.length-2));
-            setTimeout(function () {
-                var eleRemove = document.querySelectorAll('.ele-remove');
-                for (var i = 0; i < eleRemove.length; i++) {
-                    eleRemove[i].parentNode.removeChild(eleRemove[i])
-                }
-            }, 0);
+            alert(value.substr(0, value.length - 2));
+            cleanQueue('.ele-remove');
             count--;
+            queueValue.shift()
         };
         var rightRemove = function () {
             var obj = queue.lastElementChild;
             obj.classList.add('ele-remove');
             var value = obj.style.height;
-            alert(value.substr(0,value.length-2));
-            setTimeout(function () {
-                var eleRemove = document.querySelectorAll('.ele-remove');
-                for (var i = 0; i < eleRemove.length; i++) {
-                    eleRemove[i].parentNode.removeChild(eleRemove[i])
-                }
-            }, 0);
+            alert(value.substr(0, value.length - 2));
+            cleanQueue('.ele-remove');
             count--;
+            queueValue.pop()
         };
         var clickRemove = function () {
+            var value = this.style.height.substr(0, this.style.height.length - 2);
+            var index = queueValue.indexOf(value);
+            queueValue.splice(index, 1);
             this.classList.add('ele-remove');
-            setTimeout(function () {
-                var eleRemove = document.querySelectorAll('.ele-remove');
-                for (var i = 0; i < eleRemove.length; i++) {
-                    eleRemove[i].parentNode.removeChild(eleRemove[i])
-                }
-            }, 0);
+            cleanQueue('.ele-remove');
             count--;
+        };
+        var swap = function (array, firstIndex, secondIndex) {
+            var temp = array[firstIndex];
+            array[firstIndex] = array[secondIndex];
+            array[secondIndex] = temp;
+        };
+//        冒泡排序
+        var popeSort = function () {
+            var len = queueValue.length,i,j,stop;
+            for (i = 0; i < len; i++) {
+                for (j = 0, stop = len - i; j < stop; j++) {
+//                    将queueValue中的值转换为10进制整数再进行比较
+                    var a = parseInt(queueValue[j]);
+                    var b = parseInt(queueValue[j + 1]);
+                    if (a > b) {
+                        swap(queueValue, j, j+1);
+                    }
+                }
+            }
+            var child = queue.firstElementChild;
+//            重置i=0
+            i = 0;
+//            元素遍历 根据queueValue更改元素高度
+            while (child != queue.lastElementChild) {
+                child.style.height = queueValue[i] + 'px';
+                child.style.marginTop = (150 - queueValue[i]) + 'px';
+                i++;
+                child = child.nextElementSibling
+            }
+//            lastChild同样更改
+            child.style.height = queueValue[i] + 'px';
+            child.style.marginTop = (150 - queueValue[i]) + 'px';
         };
 //事件绑定对象
         var leftAddBtn = document.getElementById('#left-add');
         var rightAddBtn = document.getElementById('#right-add');
         var leftRemoveBtn = document.getElementById('#left-remove');
         var rightRemoveBtn = document.getElementById('#right-remove');
-//        Array
-        var clickBtn = document.getElementsByClassName('num-box');
-
+        var sortBtn = document.getElementById('#sort');
 //        事件绑定
         leftAddBtn.addEventListener('click', leftAdd, false);
         rightAddBtn.addEventListener('click', rightAdd, false);
@@ -152,11 +169,24 @@
         for (var i = 0; i < clickBtn.length; i++) {
             clickBtn[i].addEventListener('click', clickRemove, false);
         }
-//冒泡排序
-        var popeSort=function (array) {
-
-        }
-
+        sortBtn.addEventListener('click', popeSort, false);
+//        创建子元素
+        var createChild = function (tag, className, value) {
+            var newChild = document.createElement(tag);
+            newChild.classList.add(className);
+            newChild.style.height = value + 'px';
+            newChild.style.marginTop = (150 - value) + 'px';
+            return newChild
+        };
+//        垃圾清除
+        var cleanQueue = function (className) {
+            setTimeout(function (className) {
+                var eleRemove = document.querySelectorAll(className);
+                for (var i = 0; i < eleRemove.length; i++) {
+                    eleRemove[i].parentNode.removeChild(eleRemove[i])
+                }
+            }, 0);
+        };
     })()
 </script>
 </body>
