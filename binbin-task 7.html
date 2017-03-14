@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IFE javaScript task 07</title>
+    <style>
+        div {
+            border: 2px solid black;
+
+        }
+
+        .root {
+
+            margin: 0 auto;
+            display: flex;
+            width: 600px;
+            height: 150px;
+            justify-content: space-between;
+        }
+
+        .item {
+            display: flex;
+            flex: auto;
+            margin: 5% 2%;
+            justify-content: space-between;
+            background-color: white;
+
+        }
+
+        .check {
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+<button>遍历</button>
+<div class="root">
+    <div class="item">
+        <div class="item">
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+        <div class="item">
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+    </div>
+    <div class="item">
+        <div class="item">
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+        <div class="item">
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function () {
+        var root = document.getElementsByClassName('root')[0];
+        var btn = document.getElementsByTagName('button')[0];
+        var inOrder = function (node) {
+            setTimeout(function () {
+                if (node) {
+                    inOrder(node.firstElementChild);
+                    node.style.backgroundColor = 'blue';
+                    console.log(node);
+                    inOrder(node.lastElementChild);
+                }
+            },1000)
+        };
+        btn.addEventListener('click', function () {
+            inOrder(root)
+        }, false);
+    })()
+</script>
+</body>
+</html>
