@@ -61,18 +61,27 @@
         var root = document.getElementsByClassName('root')[0];
         var btn = document.getElementsByTagName('button')[0];
         var inOrder = function (node) {
-            setTimeout(function () {
-                if (node) {
-                    inOrder(node.firstElementChild);
-                    node.style.backgroundColor = 'blue';
-                    console.log(node);
-                    inOrder(node.lastElementChild);
+            var temp=node;
+//            setInterval(function () {
+                if (temp) {
+                    inOrder(temp.firstElementChild);
+//                    setTimeout(function () {
+                        temp.style.backgroundColor = 'blue';
+//                    },1000);
+//                    temp.style.backgroundColor = 'blue';
+                    console.log(temp);
+                    inOrder(temp.lastElementChild);
                 }
-            },1000)
+//            },1000)
         };
+
         btn.addEventListener('click', function () {
-            inOrder(root)
+//          setTimeout(function () {
+              inOrder(root);
+//          },1000)
+
         }, false);
+//        inOrder(root);
     })()
 </script>
 </body>
