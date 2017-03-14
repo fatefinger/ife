@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IFE javaScript task 06</title>
+    <style>
+        html {
+            font-family: 微软雅黑;
+            font-size: 14px;
+        }
+
+        .btn {
+            border: 1px solid #eeeeee;
+            border-radius: 2px;
+            line-height: 15px;
+            width: 50px;
+            padding: 2px 5px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .queue {
+            max-width: 100%;
+            height: 100px;
+            white-space: normal;
+            padding: 5px 0;
+        }
+
+        .num-box {
+            background-color: red;
+            color: white;
+            min-width: 40px;
+            height: 50px;
+            float: left;
+            line-height: 50px;
+            text-align: center;
+            font-weight: bold;
+            margin-right: 5px;
+            padding: 0 5px;
+        }
+
+        .check {
+            background-color: yellow;
+        }
+
+        .ele-remove {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <textarea name="input" id="#input" cols="30" rows="10" placeholder="请输入要查询的内容"></textarea>
+    <div class="btn" id="#left-add">左侧入</div>
+    <div class="btn" id="#right-add">右侧入</div>
+    <div class="btn" id="#left-remove">左侧出</div>
+    <div class="btn" id="#right-remove">右侧出</div>
+    <input type="text" id="#inputBox">
+    <div class="btn" id="#search">查询</div>
+</div>
+<div class="queue">
+    <div class="num-box">2233444</div>
+    <div class="num-box">14</div>
+    <div class="num-box">16</div>
+</div>
+<script>
+
+    (function () {
+        var queue = document.getElementsByClassName('queue')[0];
+
+//        事件句柄
+        var leftAdd = function () {
+            var value = document.getElementById('#input').value;
+            var valueArray = value.split(/[,.\n，。、 ]/g);
+            if (valueArray.length == 0) {
+                return alert('请输入内容')
+            }
+            valueArray.forEach(function (item) {
+                var newLastChild = document.createElement('div');
+                newLastChild.classList.add('num-box');
+                newLastChild.innerHTML = item;
+                queue.insertBefore(newLastChild, queue.childNodes[0]);
+            });
+        };
+        var rightAdd = function () {
+            var value = document.getElementById('#input').value;
+            var valueArray = value.split(/[,.\n，。、 ]/g);
+            if (valueArray.length == 0) {
+                return alert('请输入内容')
+            }
+            valueArray.forEach(function (item) {
+                var newLastChild = document.createElement('div');
+                newLastChild.classList.add('num-box');
+                newLastChild.innerHTML = item;
+                queue.appendChild(newLastChild);
+            })
+        };
+        var leftRemove = function () {
+            var obj = queue.firstElementChild;
+            obj.classList.add('ele-remove');
+            var value = obj.innerHTML;
+            alert(value);
+            setTimeout(function () {
+                var eleRemove = document.querySelectorAll('.ele-remove');
+                for (var i = 0; i < eleRemove.length; i++) {
+                    eleRemove[i].parentNode.removeChild(eleRemove[i])
+                }
+            }, 0)
+        };
+        var rightRemove = function () {
+            var obj = queue.lastElementChild;
+            obj.classList.add('ele-remove');
+            var value = obj.innerHTML;
+            alert(value);
+            setTimeout(function () {
+                var eleRemove = document.querySelectorAll('.ele-remove');
+                for (var i = 0; i < eleRemove.length; i++) {
+                    eleRemove[i].parentNode.removeChild(eleRemove[i])
+                }
+            }, 0)
+        };
+        var clickRemove = function () {
+            this.classList.add('ele-remove');
+            setTimeout(function () {
+                var eleRemove = document.querySelectorAll('.ele-remove');
+                for (var i = 0; i < eleRemove.length; i++) {
+                    eleRemove[i].parentNode.removeChild(eleRemove[i])
+                }
+            }, 0)
+        };
+        var checkString = function () {
+            var child = queue.firstElementChild;
+            var value = document.getElementById('#inputBox').value;
+            while (child != queue.lastElementChild) {
+                if (child.innerHTML.indexOf(value) != -1) {
+                    child.classList.add('check')
+                }
+                child = child.nextElementSibling;
+            }
+            if (child.innerHTML.indexOf(value) != -1) {
+                child.classList.add('check')
+            }
+
+        };
+//事件绑定对象
+        var leftAddBtn = document.getElementById('#left-add');
+        var rightAddBtn = document.getElementById('#right-add');
+        var leftRemoveBtn = document.getElementById('#left-remove');
+        var rightRemoveBtn = document.getElementById('#right-remove');
+        var checkBtn = document.getElementById('#search');
+//        Array
+        var clickBtn = document.getElementsByClassName('num-box');
+
+
+//        事件绑定
+        leftAddBtn.addEventListener('click', leftAdd, false);
+        rightAddBtn.addEventListener('click', rightAdd, false);
+        leftRemoveBtn.addEventListener('click', leftRemove, false);
+        rightRemoveBtn.addEventListener('click', rightRemove, false);
+        checkBtn.addEventListener('click', checkString, false);
+        for (var i = 0; i < clickBtn.length; i++) {
+            clickBtn[i].addEventListener('click', clickRemove, false);
+        }
+
+    })()
+</script>
+</body>
+</html>
