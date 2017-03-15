@@ -87,7 +87,12 @@
                     console.log(temp);
                     setTimeout(function () {
                         temp.style.backgroundColor = 'blue';
-                    }, 500 * count)
+                    }, 500 * count);
+                    if (queue.length==0) {
+                        setTimeout(function () {
+                            temp.style.backgroundColor = 'white';
+                        }, 550 * count)
+                    }
                 }
 
 //        搜索
@@ -97,9 +102,6 @@
                         color(temp);
                         var value = node.innerHTML;
                         if (value == text) {
-                            setTimeout(function () {
-                                node.style.backgroundColor = 'yellow';
-                            }, 500 * count);
                             queue.push(node);
                             return queue;
                         }
@@ -158,7 +160,10 @@
                         if (queue.length == 0) {
                             alert('找不到该节点')
                         }
-                    }, 500 * count)
+                    }, 500 * count);
+                    setTimeout(function () {
+                        queue[0].style.backgroundColor = 'yellow';
+                    }, 600 * count);
                 }, false)
 
             })()
