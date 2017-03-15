@@ -61,14 +61,12 @@
         var root = document.getElementsByClassName('root')[0];
         var btn = document.getElementsByTagName('button')[0];
         var count = 0;
-
         function color(temp) {
             count++;
             setTimeout(function () {
                 temp.style.backgroundColor = 'blue';
             }, 1000 * count)
         }
-
         var inOrder = function (node) {
             var temp = node;
             if (temp) {
@@ -78,7 +76,6 @@
                 inOrder(temp.lastElementChild);
             }
         };
-
         btn.addEventListener('click', function () {
             inOrder(root);
         }, false);

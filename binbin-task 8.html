@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IFE javaScript task 07</title>
+    <style>
+        div {
+            border: 2px solid black;
+
+        }
+
+        .root {
+
+            margin: 20px auto;
+            display: flex;
+            width: 1200px;
+            height: 150px;
+            justify-content: space-around;
+        }
+
+        .item {
+            display: flex;
+            flex: auto;
+            margin: 10px 2px;
+            justify-content: space-around;
+            background-color: white;
+
+        }
+
+        .check {
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+<button>中序遍历</button>
+<button>前序遍历</button>
+<button>后序遍历</button>
+<input type="text" id="input">
+<button>查询</button>
+<div class="root">
+    super
+    <div class="item">banana
+        <div class="item">apple
+            <div class="item">pear</div>
+            <div class="item">pig</div>
+            <div class="item">cola</div>
+            <div class="item">soccer</div>
+        </div>
+        <div class="item">phone
+        </div>
+        <div class="item">
+            <div class="item">book</div>
+            <div class="item">school</div>
+        </div>
+    </div>
+    <div class="item">Note
+        <div class="item">Human
+            <div class="item">code</div>
+            <div class="item">operate</div>
+            <div class="item">man</div>
+        </div>
+        <div class="item">Program
+            <div class="item">bement
+                <div class="item">cat</div>
+            </div>
+            <div class="item">glass</div>
+        </div>
+    </div>
+    <div class="item">Fish</div>
+</div>
+
+
+<script>
+    (function () {
+                var root = document.getElementsByClassName('root')[0];
+                var inbtn = document.getElementsByTagName('button')[0];
+                var prebtn = document.getElementsByTagName('button')[1];
+                var aftbtn = document.getElementsByTagName('button')[2];
+                var searchbtn = document.getElementsByTagName('button')[3];
+                var inputBox = document.getElementById('input');
+                var count = 0;
+                var queue = [];
+//遍历到的第x元素将在x秒后将改变背景颜色为蓝色加入eventLoop，以出现动画效果
+                function color(temp) {
+                    count++;
+                    console.log(temp);
+                    setTimeout(function () {
+                        temp.style.backgroundColor = 'blue';
+                    }, 500 * count)
+                }
+
+//        搜索
+                var search = function (node, text) {
+                    var temp = node;
+                    if (temp && (queue.length == 0)) {
+                        color(temp);
+                        var value = node.innerHTML;
+                        if (value == text) {
+                            setTimeout(function () {
+                                node.style.backgroundColor = 'yellow';
+                            }, 500 * count);
+                            queue.push(node);
+                            return queue;
+                        }
+                        search(temp.firstElementChild, text);
+                        if (temp.nextElementSibling) {
+                            search(temp.nextElementSibling, text);
+                        }
+                    }
+                };
+//中序遍历 递归
+                var inOrder = function (node) {
+                    var temp = node;
+                    if (temp) {
+                        inOrder(temp.firstElementChild);
+                        color(temp);
+                        if (temp.nextElementSibling) {
+                            inOrder(temp.nextElementSibling);
+                        }
+                    }
+                };
+//        前序遍历 递归
+                var preOrder = function (node) {
+                    var temp = node;
+                    if (temp) {
+                        color(temp);
+                        inOrder(temp.firstElementChild);
+                        if (temp.nextElementSibling) {
+                            inOrder(temp.nextElementSibling);
+                        }
+                    }
+                };
+//        后序遍历 递归
+                var aftOrder = function (node) {
+                    var temp = node;
+                    if (temp) {
+                        inOrder(temp.firstElementChild);
+                        if (temp.nextElementSibling) {
+                            inOrder(temp.nextElementSibling);
+                        }
+                        color(temp);
+                    }
+                };
+                inbtn.addEventListener('click', function () {
+                    inOrder(root);
+                }, false);
+                prebtn.addEventListener('click', function () {
+                    preOrder(root);
+                }, false);
+                aftbtn.addEventListener('click', function () {
+                    aftOrder(root);
+                }, false);
+                searchbtn.addEventListener('click', function () {
+                    var inputText = inputBox.value;
+                    search(root, inputText);
+                    setTimeout(function () {
+                        if (queue.length == 0) {
+                            alert('找不到该节点')
+                        }
+                    }, 500 * count)
+                }, false)
+
+            })()
+</script>
+</body>
+</html>
