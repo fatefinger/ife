@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IFE JavaScript YaoYao Task 02</title>
+    <style>
+        .box {
+            margin: 20px auto;
+            display: block;
+            width: 50%;
+            position: relative;
+
+        }
+
+        .btn {
+            display: block;
+            outline: none;
+            height: 35px;
+            width: 100px;
+            background-color: #2294ea;
+            border: 1px solid #2294ea;
+            margin: 0 auto;
+            color: white;
+            font-family: 微软雅黑;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 30px;
+            padding: 2px 10px;
+            border-radius: 5px;
+            /*float: right;*/
+        }
+
+        .error-span {
+            color: red;
+        }
+
+        .error-box {
+            border-color: red;
+        }
+
+        .correct-box {
+            border-color: green;
+        }
+
+        .correct-span {
+            color: green;
+        }
+
+        .btn:active {
+            background-color: cadetblue;
+            border-color: cadetblue;
+        }
+
+        input {
+            width: 73%;
+            height: 30px;
+            padding: 2px 20px;
+            border-radius: 5px;
+            border: 1px solid #eeeeee;
+            outline: none;
+            right: 0;
+            display: inline-block;
+            position: relative;
+        }
+
+        label {
+            font-family: 微软雅黑;
+            font-weight: bold;
+            margin: 5px -35px 5px 0;
+            width: 20%;
+            bottom: 0;
+            display: inline-block;
+            position: relative;
+            /*text-align: right;*/
+            /*float: left;*/
+        }
+
+        span {
+            display: block;
+            font-size: 14px;
+            margin-left: 100px;
+            margin-top: 2px;
+        }
+
+        .normal-span {
+            color: #cccccc;
+        }
+
+        .normal-box {
+            border-color: #eeeeee;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <label for="input1">名称</label><input type="text" id="input1" placeholder="请输入名称...">
+    <span></span>
+</div>
+<div class="box">
+    <label for="input2">密码</label><input type="password" id="input2" placeholder="请输入密码...">
+    <span></span>
+</div>
+<div class="box">
+    <label for="input3">密码确认</label><input type="password" id="input3" placeholder="请确认密码...">
+    <span></span>
+</div>
+<div class="box">
+    <label for="input4">邮箱</label><input type="text" id="input4" placeholder="请输入邮箱...">
+    <span></span>
+</div>
+<div class="box">
+    <label for="input5">手机</label><input type="text" id="input5" placeholder="请输入手机号...">
+    <span></span>
+</div>
+<button class="btn">提交</button>
+<script>
+    (function () {
+        var btn = document.getElementsByClassName('btn')[0];
+        var inputBox = document.getElementsByTagName('input');
+        var span = document.getElementsByTagName('span');
+        var email=new  RegExp('/^([a-z0-9_\\.-]+)@([\\da-z\\.-]+)\\.([a-z\\.]{2,6})$','g');
+        var phoneNum=new RegExp('^1[0-9]{10}$','g');
+//        检查数组包含
+        var contains=function (item, array) {
+          var index=0;
+            for (var i=0;i<array.length;i++){
+                (function (j) {
+                    if (item==array[j]){
+                         index=j;
+                    }
+                })(i)
+            }
+            return index
+        };
+//长度检测
+        var valueCheck = function (value) {
+            var valueLen = 0;
+            for (var i = 0; i < value.length; i++) {
+                if (value.charCodeAt(i) > 255) {
+                    valueLen += 2;
+                } else {
+                    valueLen++
+                }
+            }
+            return valueLen
+        };
+//        输入框检测
+var checkInput=function (j,error) {
+    error=false;
+    var val=inputBox[j].value;
+    var thisSpan=inputBox[j].nextElementSibling;
+    if (val==''){
+        thisSpan.innerHTML='内容不可以为空';
+        thisSpan.classList.add('error-span');
+        inputBox[j].classList.add('error-box');
+        error=true
+    }else if((j==0||j==1)&&(valueCheck(val)>16||valueCheck(val)<4)){
+        thisSpan.innerHTML='错误，请输入长度为4-16的名称';
+        thisSpan.classList.add('error-span');
+        inputBox[j].classList.add('error-box');
+        error=true
+    }else if (j==2&&(val!=inputBox[1])){
+        thisSpan.innerHTML='两次密码输入不一致';
+        thisSpan.classList.add('error-span');
+        inputBox[j].classList.add('error-box');
+        error=true
+    }else if (j==3&&(email.exec(val)==null)){
+        thisSpan.innerHTML='邮箱格式错误';
+        thisSpan.classList.add('error-span');
+        inputBox[j].classList.add('error-box');
+        error=true
+    }else if (j==4&&phoneNum.exec(val)==null) {
+        thisSpan.innerHTML = '手机号格式错误';
+        thisSpan.classList.add('error-span');
+        inputBox[j].classList.add('error-box');
+        error = true;
+    }else {
+        thisSpan.innerHTML = '输入正确';
+        thisSpan.classList.add('correct-span');
+        inputBox[j].classList.add('correct-box');
+    }
+    return error
+};
+//        输入检查
+var checkItem=function () {
+    var val=this.value;
+    var index=contains(this,inputBox);
+    checkInput(index)
+};
+var checkAll=function () {
+    var error=false;
+    for (var i=0;i<inputBox.length;i++){
+        (function (j) {
+            error=checkInput(j)
+        })(i)
+    }
+    if (error==true){
+       setTimeout( function(){
+           alert('输入有误')
+       },100)
+    }
+};
+//事件绑定
+        for(var i=0;i<inputBox.length;i++){
+            (function (j) {
+                inputBox[j].addEventListener('blur',checkItem,false)
+            })(i)
+        }
+//        提交按钮
+        btn.addEventListener('click', checkAll, false);
+
+    })()
+</script>
+</body>
+</html>
