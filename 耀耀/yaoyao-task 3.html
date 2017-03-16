@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IFE JavaScript YaoYao Task 03</title>
+    <style>
+        .container {
+            margin: 0 auto;
+            width: 50%;
+            font-family: 微软雅黑;
+            font-size: 20px;
+
+        }
+
+        .in-school-radio, .out-school-radio {
+            width: 30%;
+            display: inline-block;
+            font-size: 20px;
+            margin: 10px 20px;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        input[type='radio'] + label:before {
+            content: '';
+            display: inline-block;
+            border: 1px solid #cccccc;
+            width: 15px;
+            height: 15px;
+            background-color: white;
+            border-radius: 10px;
+            margin-right: 10px;
+        }
+
+        input[type='radio']:checked + label:before {
+            content: "\2022";
+            color: #fff;
+            line-height: 15px;
+            background-color: dodgerblue;
+            border: 1px solid dodgerblue;
+            text-align: center;
+        }
+
+        select {
+            border: 1px solid #eeeeee;
+            border-radius: 5px;
+            height: 40px;
+            font-size: 20px;
+            font-family: 微软雅黑;
+            width: 300px;
+            padding: 5px 10px;
+            margin: 20px 10px 5px 10px;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            outline: none;
+        }
+
+        .in-school-select label, .out-school-input label {
+            font-weight: bold;
+        }
+        .in-school-select,.out-school-input{
+            margin: 10px 20px;
+        }
+.out-school-input input{
+    width: 500px;
+    border: 1px solid #eeeeee;
+    border-radius: 5px;
+    height: 40px;
+    padding: 5px 10px;
+    margin: 20px 10px 5px 10px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    outline: none;
+}
+        .hide{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="in-school-radio">
+        <input type="radio" id="in-school" name="student" value="在校生" checked>
+        <label for="in-school">在校生</label>
+    </div>
+    <div class="out-school-radio">
+        <input type="radio" id="out-school" name="student" value="非在校生">
+        <label for="out-school">非在校生</label>
+    </div>
+    <div class="in-school-select">
+        <label for="school">学校</label>
+        <select name="city" id="city">
+            <option value="北京">北京</option>
+            <option value="上海">上海</option>
+            <option value="广州">广州</option>
+        </select>
+        <select name="school" id="school">
+            <option value="北京大学">北京大学</option>
+            <option value="清华大学">清华大学</option>
+            <option value="人民大学">人民大学</option>
+        </select>
+    </div>
+    <div class="out-school-input">
+        <label for="company">就业单位</label>
+        <input type="text" id="company">
+    </div>
+    <div></div>
+</div>
+
+<script>
+    var data = {
+        '北京': ['清华大学', '北京大学', '人民大学'],
+        '上海': ['复旦大学', '上海交通大学', '同济大学'],
+        '广州': ['中山大学', '暨南大学']
+    }
+
+</script>
+</body>
+</html>
