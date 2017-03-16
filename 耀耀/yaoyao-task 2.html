@@ -97,19 +97,19 @@
     <span></span>
 </div>
 <div class="box">
-    <label for="input2">密码</label><input type="password" id="input2" placeholder="请输入密码...">
+    <label for="input2">密码</label><input type="password" id="input2" >
     <span></span>
 </div>
 <div class="box">
-    <label for="input3">密码确认</label><input type="password" id="input3" placeholder="请确认密码...">
+    <label for="input3">密码确认</label><input type="password" id="input3" >
     <span></span>
 </div>
 <div class="box">
-    <label for="input4">邮箱</label><input type="text" id="input4" placeholder="请输入邮箱...">
+    <label for="input4">邮箱</label><input type="text" id="input4" >
     <span></span>
 </div>
 <div class="box">
-    <label for="input5">手机</label><input type="text" id="input5" placeholder="请输入手机号...">
+    <label for="input5">手机</label><input type="text" id="input5" >
     <span></span>
 </div>
 <button class="btn">提交</button>
@@ -187,6 +187,32 @@ var checkItem=function () {
     var index=contains(this,inputBox);
     checkInput(index)
 };
+var appNote=function () {
+    var thisSpan=this.nextElementSibling;
+    var index=contains(this,inputBox);
+    if (index==0){
+        thisSpan.innerHTML='必填，请输入长度为4-16的字符';
+        thisSpan.classList=['normal-span']
+    }else if (index==1){
+        thisSpan.innerHTML='请输入密码';
+        thisSpan.classList=['normal-span']
+
+    }else if (index==2){
+        thisSpan.innerHTML='请再次输入密码';
+        thisSpan.classList=['normal-span']
+
+    }else if (index==3){
+        thisSpan.innerHTML='请输入邮箱地址';
+        thisSpan.classList=['normal-span']
+
+    }else if (index==4){
+        thisSpan.innerHTML='请输入手机号码';
+        thisSpan.classList=['normal-span']
+
+    }else {
+        alert('参数传递错误:appNote')
+    }
+};
 var checkAll=function () {
     var error=false;
     for (var i=0;i<inputBox.length;i++){
@@ -203,7 +229,8 @@ var checkAll=function () {
 //事件绑定
         for(var i=0;i<inputBox.length;i++){
             (function (j) {
-                inputBox[j].addEventListener('blur',checkItem,false)
+                inputBox[j].addEventListener('blur',checkItem,false);
+                inputBox[j].addEventListener('focus',appNote,false)
             })(i)
         }
 //        提交按钮
