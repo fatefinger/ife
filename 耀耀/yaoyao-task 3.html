@@ -114,7 +114,7 @@
     (function () {
 //        测试数据
         var data = {
-            '北京': [ '北京大学','清华大学', '人民大学'],
+            '北京': ['北京大学', '清华大学', '人民大学'],
             '上海': ['复旦大学', '上海交通大学', '同济大学'],
             '广州': ['中山大学', '暨南大学']
         };
@@ -149,27 +149,27 @@
         var citySelect = document.getElementById('city');
         var schoolChange = function () {
             var correntCity = citySelect.value;
-            if (data.hasOwnProperty(correntCity)){
+            if (data.hasOwnProperty(correntCity)) {
                 addSchool(data[correntCity]);
-            }else {
+            } else {
                 console.log('参数传递错误：schoolChange')
             }
         };
-        var addSchool=function (array) {
-            var temp=array;
-            var school=document.getElementById('school');
-            while (school.lastElementChild){
+        var addSchool = function (array) {
+            var temp = array;
+            var school = document.getElementById('school');
+            while (school.lastElementChild) {
                 school.removeChild(school.lastElementChild)
             }
             temp.forEach(function (item) {
-                var newOption=document.createElement('option');
-                newOption.value=item;
-                newOption.innerHTML=item;
+                var newOption = document.createElement('option');
+                newOption.value = item;
+                newOption.innerHTML = item;
                 school.appendChild(newOption)
             });
-            school.value=temp[0];
+            school.value = temp[0];
         };
-
+//select添加change事件监听
         citySelect.addEventListener('change', schoolChange, false);
 
     })();
