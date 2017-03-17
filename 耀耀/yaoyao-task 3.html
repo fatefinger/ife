@@ -6,7 +6,7 @@
     <style>
         .container {
             margin: 0 auto;
-            width: 50%;
+            width: 80%;
             font-family: 微软雅黑;
             font-size: 20px;
 
@@ -59,20 +59,23 @@
         .in-school-select label, .out-school-input label {
             font-weight: bold;
         }
-        .in-school-select,.out-school-input{
+
+        .in-school-select, .out-school-input {
             margin: 10px 20px;
         }
-.out-school-input input{
-    width: 500px;
-    border: 1px solid #eeeeee;
-    border-radius: 5px;
-    height: 40px;
-    padding: 5px 10px;
-    margin: 20px 10px 5px 10px;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    outline: none;
-}
-        .hide{
+
+        .out-school-input input {
+            width: 500px;
+            border: 1px solid #eeeeee;
+            border-radius: 5px;
+            height: 40px;
+            padding: 5px 10px;
+            margin: 20px 10px 5px 10px;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            outline: none;
+        }
+
+        .hide {
             display: none;
         }
     </style>
@@ -100,7 +103,7 @@
             <option value="人民大学">人民大学</option>
         </select>
     </div>
-    <div class="out-school-input">
+    <div class="out-school-input hide">
         <label for="company">就业单位</label>
         <input type="text" id="company">
     </div>
@@ -108,11 +111,68 @@
 </div>
 
 <script>
-    var data = {
-        '北京': ['清华大学', '北京大学', '人民大学'],
-        '上海': ['复旦大学', '上海交通大学', '同济大学'],
-        '广州': ['中山大学', '暨南大学']
-    }
+    (function () {
+//        测试数据
+        var data = {
+            '北京': [ '北京大学','清华大学', '人民大学'],
+            '上海': ['复旦大学', '上海交通大学', '同济大学'],
+            '广州': ['中山大学', '暨南大学']
+        };
+//检查radio 的check情况选择显示select
+        var inSchoolRadio = document.getElementById('in-school');
+        var outSchoolRadio = document.getElementById('out-school');
+        var inSchoolSelect = document.getElementsByClassName('in-school-select')[0];
+        var outSchoolInput = document.getElementsByClassName('out-school-input')[0];
+
+        inSchoolRadio.addEventListener('click', function () {
+            if (inSchoolRadio.checked) {
+                if (inSchoolSelect.classList.contains('hide')) {
+                    inSchoolSelect.classList.remove('hide');
+                }
+                outSchoolInput.classList.add('hide')
+            } else {
+                console.log('事件侦听错误：inSchoolRadio')
+            }
+        });
+        outSchoolRadio.addEventListener('click', function () {
+            if (outSchoolRadio.checked) {
+                if (outSchoolInput.classList.contains('hide')) {
+                    outSchoolInput.classList.remove('hide')
+                }
+                inSchoolSelect.classList.add('hide')
+            } else {
+                console.log('事件侦听错误：outSchoolRadio')
+            }
+        });
+
+//        切换city，school会随之变化
+        var citySelect = document.getElementById('city');
+        var schoolChange = function () {
+            var correntCity = citySelect.value;
+            if (data.hasOwnProperty(correntCity)){
+                addSchool(data[correntCity]);
+            }else {
+                console.log('参数传递错误：schoolChange')
+            }
+        };
+        var addSchool=function (array) {
+            var temp=array;
+            var school=document.getElementById('school');
+            while (school.lastElementChild){
+                school.removeChild(school.lastElementChild)
+            }
+            temp.forEach(function (item) {
+                var newOption=document.createElement('option');
+                newOption.value=item;
+                newOption.innerHTML=item;
+                school.appendChild(newOption)
+            });
+            school.value=temp[0];
+        };
+
+        citySelect.addEventListener('change', schoolChange, false);
+
+    })();
 
 
 </script>
