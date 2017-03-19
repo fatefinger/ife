@@ -60,7 +60,8 @@
             font-weight: bold;
             outline: none;
         }
-        button:active{
+
+        button:active {
             background-color: darkgray;
         }
 
@@ -74,12 +75,21 @@
 
         .td-box {
             background-color: red;
-            border-top: 10px solid blue;
-            width: 40px;
-            height: 30px;
+            border-top: 11px solid blue;
+            width: 39px;
+            height: 29px;
             float: left;
-            z-index: 999;
+            z-index: -1;
             transform: none;
+            position: absolute;
+            left: 0;
+            top: 0;
+            transition: left 1s,top 1s,transform 1s;
+
+        }
+
+        #oriPos {
+            position: relative;
         }
     </style>
 </head>
@@ -101,7 +111,9 @@
         </tr>
         <tr>
             <th>1</th>
-            <td></td>
+            <td id="oriPos">
+
+            </td>
             <td></td>
             <td></td>
             <td></td>
@@ -240,41 +252,128 @@
     (function () {
 //        小方块
         var boxRun = {
-            position: [6, 6],
+            position: [1, 1],
             rotate: 0,
             go: function () {
                 var box = document.getElementById('box');
-                box.parentNode.removeChild(box);
-                if ((boxRun.rotate == 0)&&(boxRun.position[1]>1)) {
+                if ((boxRun.rotate == 0) && (boxRun.position[1] > 1)) {
                     boxRun.position[1] -= 1;
-                } else if ((boxRun.rotate == '-90'||boxRun.rotate == '270')&&boxRun.position[0]>1) {
+                    box.style.top = (Number(box.style.top.slice(0, -2)) - 40) + 'px';
+                } else if ((boxRun.rotate == '-90' || boxRun.rotate == '270') && boxRun.position[0] > 1) {
                     boxRun.position[0] -= 1;
-                } else if ((boxRun.rotate == '90'||boxRun.rotate == '-270')&&boxRun.position[0]<10) {
+                    box.style.left = (Number(box.style.left.slice(0, -2)) - 41.6) + 'px';
+
+                } else if ((boxRun.rotate == '90' || boxRun.rotate == '-270') && boxRun.position[0] < 10) {
                     boxRun.position[0] += 1;
-                } else if ((boxRun.rotate == '180'||boxRun.rotate == '-180')&&boxRun.position[1]<10) {
+                    box.style.left = (Number(box.style.left.slice(0, -2)) + 41.6) + 'px';
+                } else if ((boxRun.rotate == '180' || boxRun.rotate == '-180') && boxRun.position[1] < 10) {
                     boxRun.position[1] += 1;
-                }else {
+                    box.style.top = (Number(box.style.top.slice(0, -2)) + 40) + 'px';
+                } else {
                     alert('无法前进')
                 }
-                init()
+
             },
             turnLeft: function () {
                 var box = document.getElementById('box');
-                var temp=(Number(boxRun.rotate)-90)%360;
+                var temp = (Number(boxRun.rotate) - 90) % 360;
                 boxRun.rotate = temp.toString();
-                box.style.transform = 'rotate('+boxRun.rotate+'deg)';
+                box.style.transform = 'rotate(' + boxRun.rotate + 'deg)';
             },
             turnRight: function () {
                 var box = document.getElementById('box');
-                var temp=(Number(boxRun.rotate)+90)%360;
+                var temp = (Number(boxRun.rotate) + 90) % 360;
                 boxRun.rotate = temp.toString();
-                box.style.transform =  'rotate('+boxRun.rotate+'deg)';
+                box.style.transform = 'rotate(' + boxRun.rotate + 'deg)';
             },
             turnBack: function () {
                 var box = document.getElementById('box');
-                var temp=(Number(boxRun.rotate)+180)%360;
+                var temp = (Number(boxRun.rotate) + 180) % 360;
                 boxRun.rotate = temp.toString();
-                box.style.transform =  'rotate('+boxRun.rotate+'deg)';
+                box.style.transform = 'rotate(' + boxRun.rotate + 'deg)';
+            },
+            traLeft: function () {
+                if (boxRun.position[0] <= 1){
+                    return
+                }
+                var box = document.getElementById('box');
+                boxRun.position[0] -= 1;
+                box.style.left = (Number(box.style.left.slice(0, -2)) - 41.6) + 'px';
+            },
+            traRight: function () {
+                if (boxRun.position[0] >= 10){
+                    return
+                }
+                var box = document.getElementById('box');
+                boxRun.position[0] += 1;
+                box.style.left = (Number(box.style.left.slice(0, -2)) + 41.6) + 'px';
+
+            },
+            traTop: function () {
+                if (boxRun.position[1] <= 1){
+                    return
+                }
+                var box = document.getElementById('box');
+                boxRun.position[1] -= 1;
+                box.style.top = (Number(box.style.top.slice(0, -2)) - 40) + 'px';
+
+            },
+            traBottom: function () {
+                if (boxRun.position[1] >= 10){
+                    return
+                }
+                var box = document.getElementById('box');
+                boxRun.position[1] += 1;
+                box.style.top = (Number(box.style.top.slice(0, -2)) + 40) + 'px';
+
+            },
+            moveLeft: function () {
+                if (boxRun.position[0] <= 1){
+                    return
+                }
+                var box = document.getElementById('box');
+                var temp = -90;
+                boxRun.rotate = temp.toString();
+                box.style.transform = 'rotate(' + boxRun.rotate + 'deg)';
+                boxRun.position[0] -= 1;
+                box.style.left = (Number(box.style.left.slice(0, -2)) - 41.6) + 'px';
+
+            },
+            moveRight: function () {
+                if (boxRun.position[0] >= 10){
+                    return
+                }
+                var box = document.getElementById('box');
+                var temp = 90;
+                boxRun.rotate = temp.toString();
+                box.style.transform = 'rotate(' + boxRun.rotate + 'deg)';
+                boxRun.position[0] += 1;
+                box.style.left = (Number(box.style.left.slice(0, -2)) + 41.6) + 'px';
+
+            },
+            moveTop: function () {
+                if (boxRun.position[1] <= 1){
+                    return
+                }
+                var box = document.getElementById('box');
+                var temp = 0;
+                boxRun.rotate = temp.toString();
+                box.style.transform = 'rotate(' + boxRun.rotate + 'deg)';
+                boxRun.position[1] -= 1;
+                box.style.top = (Number(box.style.top.slice(0, -2)) - 40) + 'px';
+
+            },
+            moveBottom: function () {
+                if (boxRun.position[1] >= 10){
+                    return
+                }
+                var box = document.getElementById('box');
+                var temp = 180;
+                boxRun.rotate = temp.toString();
+                box.style.transform = 'rotate(' + boxRun.rotate + 'deg)';
+                boxRun.position[1] += 1;
+                box.style.top = (Number(box.style.top.slice(0, -2)) + 40) + 'px';
+
             }
         };
         var tbody = document.getElementsByTagName('table')[0].firstElementChild;
@@ -296,15 +395,14 @@
             var box = document.createElement('div');
             box.id = 'box';
             box.classList.add('td-box');
-            box.style.transform='rotate('+boxRun.rotate+'deg)';
+            box.style.transform = 'rotate(' + boxRun.rotate + 'deg)';
             return box
         };
         var init = function () {
             var thisBox = initBox();
-            var pos = boxRun.position;
-            var pNodeRow = tableChildArray[pos[1] - 1];
-            var pNode = nodeChild(pNodeRow)[pos[0] - 1];
-            pNode.appendChild(thisBox)
+            var oriPos = document.getElementById('oriPos');
+            oriPos.appendChild(thisBox);
+            boxRun.position = [1, 1]
         };
 //button绑定事件
         var run = function () {
@@ -321,6 +419,30 @@
                     break;
                 case 'TUN BAC':
                     boxRun.turnBack();
+                    break;
+                case 'TRA LEF':
+                    boxRun.traLeft();
+                    break;
+                case  'TRA RIG':
+                    boxRun.traRight();
+                    break;
+                case 'TRA TOP':
+                    boxRun.traTop();
+                    break;
+                case 'TRA BOT':
+                    boxRun.traBottom();
+                    break;
+                case 'MOV LEF':
+                    boxRun.moveLeft();
+                    break;
+                case 'MOV RIG':
+                    boxRun.moveRight();
+                    break;
+                case 'MOV TOP':
+                    boxRun.moveTop();
+                    break;
+                case 'MOV BOT':
+                    boxRun.moveBottom();
                     break;
                 default:
                     alert('指令不存在');
