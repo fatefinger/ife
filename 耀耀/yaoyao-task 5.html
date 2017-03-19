@@ -84,7 +84,7 @@
             position: absolute;
             left: 0;
             top: 0;
-            transition: left 1s,top 1s,transform 1s;
+            transition: left 1s, top 1s, transform 1s;
 
         }
 
@@ -293,7 +293,7 @@
                 box.style.transform = 'rotate(' + boxRun.rotate + 'deg)';
             },
             traLeft: function () {
-                if (boxRun.position[0] <= 1){
+                if (boxRun.position[0] <= 1) {
                     return
                 }
                 var box = document.getElementById('box');
@@ -301,34 +301,31 @@
                 box.style.left = (Number(box.style.left.slice(0, -2)) - 41.6) + 'px';
             },
             traRight: function () {
-                if (boxRun.position[0] >= 10){
+                if (boxRun.position[0] >= 10) {
                     return
                 }
                 var box = document.getElementById('box');
                 boxRun.position[0] += 1;
                 box.style.left = (Number(box.style.left.slice(0, -2)) + 41.6) + 'px';
-
             },
             traTop: function () {
-                if (boxRun.position[1] <= 1){
+                if (boxRun.position[1] <= 1) {
                     return
                 }
                 var box = document.getElementById('box');
                 boxRun.position[1] -= 1;
                 box.style.top = (Number(box.style.top.slice(0, -2)) - 40) + 'px';
-
             },
             traBottom: function () {
-                if (boxRun.position[1] >= 10){
+                if (boxRun.position[1] >= 10) {
                     return
                 }
                 var box = document.getElementById('box');
                 boxRun.position[1] += 1;
                 box.style.top = (Number(box.style.top.slice(0, -2)) + 40) + 'px';
-
             },
             moveLeft: function () {
-                if (boxRun.position[0] <= 1){
+                if (boxRun.position[0] <= 1) {
                     return
                 }
                 var box = document.getElementById('box');
@@ -337,10 +334,9 @@
                 box.style.transform = 'rotate(' + boxRun.rotate + 'deg)';
                 boxRun.position[0] -= 1;
                 box.style.left = (Number(box.style.left.slice(0, -2)) - 41.6) + 'px';
-
             },
             moveRight: function () {
-                if (boxRun.position[0] >= 10){
+                if (boxRun.position[0] >= 10) {
                     return
                 }
                 var box = document.getElementById('box');
@@ -349,10 +345,9 @@
                 box.style.transform = 'rotate(' + boxRun.rotate + 'deg)';
                 boxRun.position[0] += 1;
                 box.style.left = (Number(box.style.left.slice(0, -2)) + 41.6) + 'px';
-
             },
             moveTop: function () {
-                if (boxRun.position[1] <= 1){
+                if (boxRun.position[1] <= 1) {
                     return
                 }
                 var box = document.getElementById('box');
@@ -361,10 +356,9 @@
                 box.style.transform = 'rotate(' + boxRun.rotate + 'deg)';
                 boxRun.position[1] -= 1;
                 box.style.top = (Number(box.style.top.slice(0, -2)) - 40) + 'px';
-
             },
             moveBottom: function () {
-                if (boxRun.position[1] >= 10){
+                if (boxRun.position[1] >= 10) {
                     return
                 }
                 var box = document.getElementById('box');
@@ -373,7 +367,6 @@
                 box.style.transform = 'rotate(' + boxRun.rotate + 'deg)';
                 boxRun.position[1] += 1;
                 box.style.top = (Number(box.style.top.slice(0, -2)) + 40) + 'px';
-
             }
         };
         var tbody = document.getElementsByTagName('table')[0].firstElementChild;
@@ -389,7 +382,6 @@
             }
             return childArray
         };
-        var tableChildArray = nodeChild(tbody);
 //        初始化
         var initBox = function () {
             var box = document.createElement('div');
