@@ -180,6 +180,7 @@
 <button class="btn">提交</button>
 <script>
     Object.prototype.objectExtend = function (obj) {
+        if(typeof obj==Object&&obj)
         for (var item in obj) {
             this[item] = obj[item]
         }
@@ -212,10 +213,6 @@
             },
 //            关闭后执行
             Aftclose: function () {
-
-            },
-//            回显函数
-            callBack: function () {
 
             }
         };
@@ -344,9 +341,6 @@
                 e.stopPropagation()
             },false)
         };
-
-
-
 //弹出层绑定
         return this.addEventListener(event, function (e) {
             e.stopPropagation();

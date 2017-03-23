@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IFE JavaScript YaoYao Task 07</title>
+    <style>
+        .table {
+            display: block;
+        }
+
+        .tab {
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+            font-family: 微软雅黑;
+            color: white;
+            background-color: #2294ea;
+            border: 1px solid mediumslateblue;
+
+        }
+
+
+        .td {
+            width: 80px;
+            height: 30px;
+            line-height: 30px;
+            font-family: 微软雅黑;
+            color: black;
+            text-align: center;
+            border: 1px solid #cccccc;
+        }
+
+        .tr-b {
+            background-color: #eeeeee;
+        }
+
+        .tr-a {
+            background-color: white;
+        }
+        .sort{
+            color: yellow;
+        }
+    </style>
+</head>
+<body>
+<script>
+    Object.prototype.objectExtend = function (obj) {
+        if (obj)
+            for (var item in obj) {
+                this[item] = obj[item];
+                console.log(item)
+            }
+        return this
+    };
+
+    Object.prototype.table = function (data, conf) {
+        'use strict';
+//        检验是否为element
+        if (this.nodeType != 1) {
+            return alert('createTable上下文传递错误')
+        }
+//        table配置
+        var config = {
+//            列表标识ID
+            id: 'eg1',
+//            列表状态
+            isShow: false,
+//            是否可排序
+            isSort: true,
+//            是否隔行变色
+            isGrid: true,
+//            排序状态 在0与1之间翻转，以此决定升序还是降序
+            state: 0,
+//            从第几个表头开始可以排序
+            sortNum:2,
+//            排序方法
+            sortFun:null
+        };
+//        列表数据
+        var tableData = {
+            head: ['姓名', '成绩1', '成绩2', '成绩3'],
+            data: [
+                ['示例1', 22, 33, 44, 55],
+                ['示例2', 1, 33, 12, 44],
+                ['示例3', 33, 23]
+            ]
+        };
+//
+        tableData.objectExtend(data);
+        config.objectExtend(conf);
+        var obj = this;
+//        生成table方法
+        var createTable = function () {
+
+            var table = document.createElement('table');
+            table.id = config.id;
+            table.cellSpacing = 0;
+            if (tableData) {
+                var col = tableData.head.length;
+                var row = tableData.data.length;
+                var tableTab = document.createElement('tr');
+                table.appendChild(tableTab);
+                for (var i = 0; i < col; i++) {
+                    (function (j) {
+                        var th = document.createElement('th');
+                        th.classList.add('tab');
+                        th.innerHTML = tableData.head[j];
+                        tableTab.appendChild(th)
+                    })(i)
+                }
+                for (var i = 0; i < row; i++) {
+                    var tr = document.createElement('tr');
+                    table.appendChild(tr);
+                    for (var j = 0; j < col; j++) {
+                        var td = document.createElement('td');
+                        tableData.data[i][j] == undefined ?
+                                td.innerHTML = 0 : td.innerHTML = tableData.data[i][j];
+                        td.classList.add('td');
+                        tr.appendChild(td)
+                    }
+                }
+                obj.insertBefore(table, obj.firstElementChild);
+                config.isShow = true
+            } else {
+                console.log('数据错误：createTable:tableData 1')
+            }
+        };
+//        删除table
+        var removeTable = function () {
+            if (config.isShow) {
+                var item = document.getElementById(config.id);
+                if (item) {
+                    item.parentNode.removeChild(item);
+                    config.isShow = false
+                } else {
+                    console.log('table不存在：2')
+                }
+            } else {
+                console.log('table不存在：1')
+            }
+        };
+
+
+//设置排序
+        var setSort = function () {
+            if (config.isSort) {
+                var item = document.getElementById(config.id);
+                var th = item.getElementsByTagName('th');
+                //                状态牌子，0为初始态，1为升序，2为降序
+//                排序
+                var tableSort = function () {
+                    var index = 0;
+                    for (var i = 0; i < th.length; i++) {
+                        if (th[i] == this) {
+                            break
+                        } else {
+                            index++
+                        }
+                    }
+
+                    var compare = function (value1, value2) {
+
+                        if (config.state == 0) {
+                            return value2[index] - value1[index]
+                        } else {
+                            return value1[index] - value2[index]
+                        }
+                    };
+//                    利用sort方法进行排序
+
+                    tableData.data.sort(config.sortFun?config.sortFun:compare);
+                    if (config.state == 0) {
+                        config.state = 1
+                    } else {
+                        config.state = 0
+                    }
+//                    删除原列表
+                    removeTable();
+//                    重新创建列表
+                    createTable();
+//                    绑定点击事件
+                    setSort()
+
+                };
+                for (var i = config.sortNum-1; i < th.length; i++) {
+                    th[i].addEventListener('click', tableSort, false)
+                    th[i].classList.add('sort')
+                }
+            }
+        };
+        createTable();
+        setSort();
+
+        return tableData
+    };
+    var body = document.getElementsByTagName('body')[0];
+    body.table({
+        head: ['姓名', '年龄', '长度', '高度','宽度'],
+        data: [
+            ['张三', 22, 33, 44, 55, 333, 222],
+            ['李四', 1, 33, 12, 44, 66],
+            ['王五', 133, 223]
+        ]
+    });
+
+
+</script>
+</body>
+</html>
