@@ -19,7 +19,6 @@
 
         }
 
-
         .td {
             width: 80px;
             height: 30px;
@@ -37,7 +36,8 @@
         .tr-a {
             background-color: white;
         }
-        .sort{
+
+        .sort {
             color: yellow;
         }
     </style>
@@ -72,9 +72,9 @@
 //            排序状态 在0与1之间翻转，以此决定升序还是降序
             state: 0,
 //            从第几个表头开始可以排序
-            sortNum:2,
+            sortNum: 2,
 //            排序方法
-            sortFun:null
+            sortFun: null
         };
 //        列表数据
         var tableData = {
@@ -89,7 +89,7 @@
         tableData.objectExtend(data);
         config.objectExtend(conf);
         var obj = this;
-//        生成table方法
+//        生成table
         var createTable = function () {
 
             var table = document.createElement('table');
@@ -125,6 +125,19 @@
                 console.log('数据错误：createTable:tableData 1')
             }
         };
+//        更新数据
+        var update = function () {
+            var col = tableData.head.length;
+            var row = tableData.data.length;
+            for (var i = 0; i < row; i++) {
+                var tr = document.getElementsByTagName('tr')[i+1];
+                for (var j = 0; j < col; j++) {
+                    var td = tr.children[j];
+                    tableData.data[i][j] == undefined ?
+                            td.innerHTML = 0 : td.innerHTML = tableData.data[i][j];
+                }
+            }
+        };
 //        删除table
         var removeTable = function () {
             if (config.isShow) {
@@ -157,7 +170,6 @@
                             index++
                         }
                     }
-
                     var compare = function (value1, value2) {
 
                         if (config.state == 0) {
@@ -167,22 +179,17 @@
                         }
                     };
 //                    利用sort方法进行排序
-
-                    tableData.data.sort(config.sortFun?config.sortFun:compare);
+                    tableData.data.sort(config.sortFun ? config.sortFun : compare);
                     if (config.state == 0) {
                         config.state = 1
                     } else {
                         config.state = 0
                     }
-//                    删除原列表
-                    removeTable();
-//                    重新创建列表
-                    createTable();
-//                    绑定点击事件
-                    setSort()
-
+//                    数据更新
+                    update()
                 };
-                for (var i = config.sortNum-1; i < th.length; i++) {
+//                事件绑定
+                for (var i = config.sortNum - 1; i < th.length; i++) {
                     th[i].addEventListener('click', tableSort, false);
                     th[i].classList.add('sort')
                 }
@@ -195,7 +202,7 @@
     };
     var body = document.getElementsByTagName('body')[0];
     body.table({
-        head: ['姓名', '年龄', '长度', '高度','宽度'],
+        head: ['姓名', '年龄', '长度', '高度', '宽度'],
         data: [
             ['张三', 22, 33, 44, 55, 333, 222],
             ['李四', 1, 33, 12, 44, 66],
