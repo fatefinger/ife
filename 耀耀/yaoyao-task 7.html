@@ -138,28 +138,11 @@
                 }
             }
         };
-//        删除table
-        var removeTable = function () {
-            if (config.isShow) {
-                var item = document.getElementById(config.id);
-                if (item) {
-                    item.parentNode.removeChild(item);
-                    config.isShow = false
-                } else {
-                    console.log('table不存在：2')
-                }
-            } else {
-                console.log('table不存在：1')
-            }
-        };
-
-
 //设置排序
         var setSort = function () {
             if (config.isSort) {
                 var item = document.getElementById(config.id);
                 var th = item.getElementsByTagName('th');
-                //                状态牌子，0为初始态，1为升序，2为降序
 //                排序
                 var tableSort = function () {
                     var index = 0;
